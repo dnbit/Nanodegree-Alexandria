@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
 import it.jaschke.alexandria.services.DownloadImage;
@@ -78,6 +77,14 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                     clearFields();
                     return;
                 }
+
+                //Fix for airplane mode
+                if (!CommonHelper.isNetworkConnected(getContext()))
+                {
+                    Toast.makeText(getContext(), R.string.network_unavailable, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 //Once we have an ISBN, start a book intent
                 Intent bookIntent = new Intent(getActivity(), BookService.class);
                 bookIntent.putExtra(BookService.EAN, ean);
