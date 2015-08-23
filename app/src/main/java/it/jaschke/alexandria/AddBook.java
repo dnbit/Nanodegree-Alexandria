@@ -89,7 +89,8 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                 }
                 if (ean.length() < 13)
                 {
-                    clearFields();
+                    // We do not want to clear fields before having a new match
+                    //clearFields();
                     return;
                 }
 
