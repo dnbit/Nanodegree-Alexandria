@@ -14,7 +14,8 @@ import it.jaschke.alexandria.data.DbHelper;
 /**
  * Created by saj on 23/12/14.
  */
-public class TestDb extends AndroidTestCase {
+public class TestDb extends AndroidTestCase
+{
     public static final String LOG_TAG = TestDb.class.getSimpleName();
 
     public final static long ean = 9780137903955L;
@@ -25,7 +26,8 @@ public class TestDb extends AndroidTestCase {
     public final static String author = "Stuart Jonathan Russell";
     public final static String category = "Computers";
 
-    public void testCreateDb() throws Throwable {
+    public void testCreateDb() throws Throwable
+    {
         mContext.deleteDatabase(DbHelper.DATABASE_NAME);
         SQLiteDatabase db = new DbHelper(
                 this.mContext).getWritableDatabase();
@@ -33,7 +35,8 @@ public class TestDb extends AndroidTestCase {
         db.close();
     }
 
-    public void testInsertReadDb() {
+    public void testInsertReadDb()
+    {
 
         DbHelper dbHelper = new DbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -111,22 +114,25 @@ public class TestDb extends AndroidTestCase {
 
     }
 
-    static void validateCursor(Cursor valueCursor, ContentValues expectedValues) {
+    static void validateCursor(Cursor valueCursor, ContentValues expectedValues)
+    {
 
         assertTrue(valueCursor.moveToFirst());
 
         Set<Map.Entry<String, Object>> valueSet = expectedValues.valueSet();
-        for (Map.Entry<String, Object> entry : valueSet) {
+        for (Map.Entry<String, Object> entry : valueSet)
+        {
             String columnName = entry.getKey();
             int idx = valueCursor.getColumnIndex(columnName);
-            assertFalse(columnName,idx == -1);
+            assertFalse(columnName, idx == -1);
             String expectedValue = entry.getValue().toString();
             assertEquals(expectedValue, valueCursor.getString(idx));
         }
         valueCursor.close();
     }
 
-    public static ContentValues getBookValues() {
+    public static ContentValues getBookValues()
+    {
 
         final ContentValues values = new ContentValues();
         values.put(AlexandriaContract.BookEntry._ID, ean);
@@ -138,27 +144,30 @@ public class TestDb extends AndroidTestCase {
         return values;
     }
 
-    public static ContentValues getAuthorValues() {
+    public static ContentValues getAuthorValues()
+    {
 
-        final ContentValues values= new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(AlexandriaContract.AuthorEntry._ID, ean);
         values.put(AlexandriaContract.AuthorEntry.AUTHOR, author);
 
         return values;
     }
 
-    public static ContentValues getCategoryValues() {
+    public static ContentValues getCategoryValues()
+    {
 
-        final ContentValues values= new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(AlexandriaContract.CategoryEntry._ID, ean);
         values.put(AlexandriaContract.CategoryEntry.CATEGORY, category);
 
         return values;
     }
 
-    public static ContentValues getFullDetailValues() {
+    public static ContentValues getFullDetailValues()
+    {
 
-        final ContentValues values= new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(AlexandriaContract.BookEntry.TITLE, title);
         values.put(AlexandriaContract.BookEntry.IMAGE_URL, imgUrl);
         values.put(AlexandriaContract.BookEntry.SUBTITLE, subtitle);
@@ -168,9 +177,10 @@ public class TestDb extends AndroidTestCase {
         return values;
     }
 
-    public static ContentValues getFullListValues() {
+    public static ContentValues getFullListValues()
+    {
 
-        final ContentValues values= new ContentValues();
+        final ContentValues values = new ContentValues();
         values.put(AlexandriaContract.BookEntry.TITLE, title);
         values.put(AlexandriaContract.BookEntry.IMAGE_URL, imgUrl);
         values.put(AlexandriaContract.AuthorEntry.AUTHOR, author);
