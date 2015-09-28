@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
@@ -91,13 +90,6 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                 {
                     // We do not want to clear fields before having a new match
                     //clearFields();
-                    return;
-                }
-
-                //Fix for airplane mode
-                if (!CommonHelper.isNetworkConnected(getContext()))
-                {
-                    Toast.makeText(getContext(), R.string.network_unavailable, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -205,9 +197,18 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         ((TextView) rootView.findViewById(R.id.bookSubTitle)).setText(bookSubTitle);
 
         String authors = data.getString(data.getColumnIndex(AlexandriaContract.AuthorEntry.AUTHOR));
-        String[] authorsArr = authors.split(",");
-        ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
-        ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",", "\n"));
+
+        // Prevent NPE when authors is null
+        try
+        {
+            String[] authorsArr = authors.split(",");
+            ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
+            ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",", "\n"));
+        } catch (NullPointerException e)
+        {
+            Log.e("Catch author null", e.toString());
+        }
+
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
         if (Patterns.WEB_URL.matcher(imgUrl).matches())
         {

@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,6 +20,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import it.jaschke.alexandria.CommonHelper;
 import it.jaschke.alexandria.MainActivity;
 import it.jaschke.alexandria.R;
 import it.jaschke.alexandria.data.AlexandriaContract;
@@ -146,7 +148,12 @@ public class BookService extends IntentService
         } catch (Exception e)
         {
             Log.e(LOG_TAG, "Error ", e);
-            return;
+            //Fix for airplane mode
+            if (!CommonHelper.isNetworkConnected(this))
+            {
+                Toast.makeText(this, R.string.network_unavailable, Toast.LENGTH_SHORT).show();
+                return;
+            }
         } finally
         {
             if (urlConnection != null)
